@@ -7,21 +7,6 @@
 
 ---@type LazySpec
 return {
-  {
-    "goolord/alpha-nvim",
-    opts = function(_, opts)
-      -- customize the dashboard header
-      opts.section.header.val = {
-        "███████╗██████╗ ██╗██╗  ██╗ ██╗██████╗        ██╗ ",
-        "██╔════╝██╔══██╗██║██║ ██╔╝███║╚════██╗    ██╗╚██",
-        "███████╗██████╔╝██║█████╔╝ ╚██║ █████╔╝    ╚═╝ ██║",
-        "╚════██║██╔═══╝ ██║██╔═██╗  ██║ ╚═══██╗    ██╗ ██║",
-        "███████║██║     ██║██║  ██╗ ██║██████╔╝    ╚═╝██╔╝",
-        "╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═╝╚═════╝        ╚═╝ ",
-      }
-      return opts
-    end,
-  },
   "AstroNvim/astrocore",
   ---@type AstroCoreOpts
   opts = {
