@@ -55,6 +55,14 @@ return {
           "<Cmd>2ToggleTerm size=60 direction=vertical<CR>",
           desc = "Open second vertical Terminal",
         },
+        ["<C-/>"] = {
+          "<Cmd>ToggleTerm size=150 direction=vertical<CR>",
+          desc = "Increase size of vertical Terminal",
+        },
+        ["gi"] = {
+          "gI",
+          desc = "go to implementation",
+        },
         -- packagejson config manager
         ["<Leader>ns"] = {
           function() require("package-info").show() end,
@@ -121,6 +129,10 @@ return {
           "<Cmd>2ToggleTerm size=60 direction=vertical<CR>",
           desc = "Open second vertical Terminal",
         },
+        ["<C-/>"] = {
+          "<Cmd>ToggleTerm size=150 direction=vertical<CR>",
+          desc = "Increase size of vertical Terminal",
+        },
       },
       t = {
         ["<C-.>"] = {
@@ -130,6 +142,10 @@ return {
         ["<C-,>"] = {
           "<Cmd>2ToggleTerm size=60 direction=vertical<CR>",
           desc = "Open second vertical Terminal",
+        },
+        ["<C-/>"] = {
+          "<Cmd>ToggleTerm size=150 direction=vertical<CR>",
+          desc = "Increase size of vertical Terminal",
         },
         -- setting a mapping to false will disable it
         -- ["<esc>"] = false,
