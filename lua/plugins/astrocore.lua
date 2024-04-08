@@ -59,10 +59,12 @@ return {
           "<Cmd>ToggleTerm size=150 direction=vertical<CR>",
           desc = "Increase size of vertical Terminal",
         },
-        ["gi"] = {
-          "gI",
-          desc = "go to implementation",
-        },
+        -- ["gi"] = {
+        --   "gI",
+        --   desc = "go to implementation",
+        --   noremap = true,
+        -- },
+        ["gi"] = { function() vim.lsp.buf.implementation() end, desc = "Go to implementation", noremap = true },
         -- packagejson config manager
         ["<Leader>ns"] = {
           function() require("package-info").show() end,

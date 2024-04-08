@@ -12,8 +12,6 @@ vim.api.nvim_create_autocmd("UiEnter", {
     if vim.fn.argc() == 0 then vim.cmd "Neotree toggle" end
   end,
 })
--- remap gI on gi
-vim.api.nvim_set_keymap("n", "gi", "gI", { noremap = true })
 
 -- Set filetype to php.html for .php files on buffer read and new file creation
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
