@@ -20,6 +20,13 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 })
 vim.g.copilot_no_tab_map = true
 vim.api.nvim_set_keymap("i", "<C-t>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+-- Assuming the Lua module is named 'curl_command_runner.lua' and stored in '~/.config/nvim/lua/'
+vim.api.nvim_set_keymap(
+  "n",
+  "<C-c>",
+  '<cmd>lua require("curl_command_runner").run_curl_command()<CR>',
+  { noremap = true, silent = true }
+)
 -- Set up custom filetypes
 vim.filetype.add {
   extension = {
