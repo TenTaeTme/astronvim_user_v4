@@ -3,10 +3,103 @@
 -- curl --location 'http://localhost:9999/api/auth/request' \
 -- --header 'Content-Type: text/plain' \
 -- --data-raw '{"email":"spik_13@mail.ru"}'
---
+
+-- curl --location --request GET 'http://localhost:9999/api/admin/resources' \
+-- --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTM2ODQ5OTcsInBheWxvYWQiOnsiZW1haWwiOiJzcGlrXzEzQG1haWwucnUiLCJmaXJzdF9uYW1lIjoiIiwibGFzdF9uYW1lIjoiIiwidXNlcl9pZCI6IjY2MTUyZjBjMzMwMDQzZDJlODJlOTMyNSIsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9zbHVnIjoiODVmOTZhODgtMWNlYi00N2FjLWI1YmQtMjc3OTY3ZTQxYmM4In0sInRva2VuVHlwZSI6MX0.lkxzEx3Mpwt3k2dIxgFdA9Bh8s-PLdsp6vHxx3ye7VY' \
+-- --header 'Content-Type: text/plain'
 local M = {}
 
 M.debug_mode = 0
+
+local function format_result_lines(result, max_length, preserve_words)
+  max_length = max_length or 80 -- Default maximum length of a line
+  preserve_words = preserve_words or false -- Default to breaking anywhere if not specified
+  local formatted_lines = {}
+  local words = {}
+
+  -- Iterate through each line in the result
+  for line in result:gmatch "([^\r\n]*)\r?\n?" do
+    if #line == 0 then
+      -- If the line is empty, preserve the blank line
+      table.insert(formatted_lines, "")
+    else
+      -- Reset the words table for each non-empty line
+      words = {}
+      -- Extract words from the line
+      for word in line:gmatch "%S+" do
+        table.insert(words, word)
+      end
+
+      -- Rebuild the line respecting the max_length
+      local current_line = ""
+      local current_length = 0
+      for _, word in ipairs(words) do
+        if preserve_words then
+          -- Break line before word if adding it would exceed max_length
+          if current_length + #word + 1 > max_length then
+            table.insert(formatted_lines, current_line)
+            current_line = word
+            current_length = #word
+          else
+            current_line = current_line .. (#current_line > 0 and " " or "") .. word
+            current_length = current_length + (#current_line > 0 and #word + 1 or #word)
+          end
+        else
+          -- Break line immediately when reaching max_length
+          for c in word:gmatch "." do
+            if current_length == max_length then
+              table.insert(formatted_lines, current_line)
+              current_line = ""
+              current_length = 0
+            end
+            current_line = current_line .. c
+            current_length = current_length + 1
+          end
+          -- Add a space if not at line start and next word could fit on this line
+          if current_length < max_length then
+            current_line = current_line .. " "
+            current_length = current_length + 1
+          end
+        end
+      end
+      -- Don't forget to add the last processed line if not empty
+      if #current_line > 0 then table.insert(formatted_lines, current_line) end
+    end
+  end
+
+  -- Join all formatted lines into a single string with new lines
+  return table.concat(formatted_lines, "\n")
+end
+-- local function format_result_lines(result, max_length)
+--   max_length = max_length or 80 -- Default max length of a line
+--   local words = {}
+--   local formatted_lines = {}
+--   local current_line = {}
+--
+--   -- Break the result into words
+--   for word in result:gmatch "%S+" do
+--     table.insert(words, word)
+--   end
+--
+--   local current_length = 0
+--
+--   -- Construct lines ensuring they don't exceed the max_length
+--   for _, word in ipairs(words) do
+--     if current_length + #word + 1 > max_length then
+--       -- When adding this word would exceed max_length, start a new line
+--       table.insert(formatted_lines, table.concat(current_line, " "))
+--       current_line = {} -- Reset current line
+--       current_length = 0 -- Reset length
+--     end
+--     table.insert(current_line, word)
+--     current_length = current_length + #word + 1 -- +1 for the space between words
+--   end
+--
+--   -- Don't forget to add the last line if any
+--   if #current_line > 0 then table.insert(formatted_lines, table.concat(current_line, " ")) end
+--
+--   return formatted_lines
+-- end
 
 local function debug_print(...)
   if M.debug_mode == 1 then print(...) end
@@ -62,6 +155,8 @@ function M.run_curl_command()
     local handle = io.popen(curl_command .. " 2>&1")
     local result = handle:read "*a"
     handle:close()
+
+    result = format_result_lines(result, 140, false)
 
     debug_print("Command execution result:", result)
 
