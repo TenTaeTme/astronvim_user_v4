@@ -66,6 +66,7 @@
   "toggleterm.nvim": { "branch": "main", "commit": "193786e0371e3286d3bc9aa0079da1cd41beaa62" },
   "tsc.nvim": { "branch": "main", "commit": "02856f0c67741a7c060df8f24a7f2806e1935f46" },
   "typescript-tools.nvim": { "branch": "master", "commit": "c43d9580c3ff5999a1eabca849f807ab33787ea7" },
+  "undotree": { "branch": "master", "commit": "56c684a805fe948936cda0d1b19505b84ad7e065" },
   "vim-go": { "branch": "master", "commit": "14eedf6135cf4253b0ed48a0b53d6834a40da1c4" },
   "vim-illuminate": { "branch": "master", "commit": "305bf07b919ac526deb5193280379e2f8b599926" },
   "vim-matchup": { "branch": "master", "commit": "2d660e4aa7c566014c667af2cda0458043527902" },
